@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Результат конвертации</title>
+</head>
+<body>
+    <h2>Результат конвертации</h2>
+        <div th:text="${input} + ' ' + ${inputCurrency.getCharCode()} + ' = ' + ${result} + ' ' + ${outputCurrency.getCharCode()}" id="output_currency"/>
+
+    <a href="/">Вернуться</a>
+</body>
+</html>
