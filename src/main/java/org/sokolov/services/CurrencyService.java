@@ -2,6 +2,7 @@ package org.sokolov.services;
 
 import org.sokolov.domains.Currency;
 import org.sokolov.microservices.CurrencyProxy;
+import org.sokolov.repositories.ConversionHistoryRepository;
 import org.sokolov.repositories.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class CurrencyService {
 
     @Autowired
     private CurrencyRepository currencyRepository;
+
+    @Autowired
+    private ConversionHistoryRepository historyRepository;
 
     @Autowired
     private CreationPOJOService pojoService;
@@ -46,6 +50,9 @@ public class CurrencyService {
     }
 
     public Double convertCurrency(Double inputNumber, Currency inputCurrency, Currency outputCurrency){
-        return (inputCurrency.getValue() / inputCurrency.getNominal()) / (outputCurrency.getValue() / outputCurrency.getNominal()) * inputNumber;
-    }
+        Double outputNumber =  (inputCurrency.getValue() / inputCurrency.getNominal()) / (outputCurrency.getValue() / outputCurrency.getNominal()) * inputNumber;
+
+        historyRepository.save(pojoService.createConversionHistory(inputNumber,outputNumber,inputCurrency,outputCurrency));
+
+        return outputNumber;    }
 }

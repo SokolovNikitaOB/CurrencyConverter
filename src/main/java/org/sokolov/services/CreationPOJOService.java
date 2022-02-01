@@ -1,5 +1,6 @@
 package org.sokolov.services;
 
+import org.sokolov.domains.ConversionHistory;
 import org.sokolov.domains.Currency;
 import org.sokolov.microservices.xmlclasses.Valute;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,16 @@ public class CreationPOJOService {
         currency.setValue(Double.parseDouble(valute.getValue().replace(",", ".")));
         currency.setDate(now);
         return currency;
+    }
+
+    public ConversionHistory createConversionHistory(Double inputNumber, Double outputNumber,
+                                                     Currency inputCurrency, Currency outputCurrency){
+        ConversionHistory conversionHistory = new ConversionHistory();
+        conversionHistory.setConversionDate(LocalDateTime.now());
+        conversionHistory.setInputCurrency(inputCurrency);
+        conversionHistory.setOutputCurrency(outputCurrency);
+        conversionHistory.setInputValue(inputNumber);
+        conversionHistory.setOutputValue(outputNumber);
+        return conversionHistory;
     }
 }

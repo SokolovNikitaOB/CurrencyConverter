@@ -1,6 +1,7 @@
 package org.sokolov.controllers;
 
 import org.sokolov.domains.Currency;
+import org.sokolov.services.ConversionHistoryService;
 import org.sokolov.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MainController {
     @Autowired
     CurrencyService currencyService;
+
+    @Autowired
+    ConversionHistoryService historyService;
 
     @GetMapping
     public String main(Model model){
@@ -35,6 +39,10 @@ public class MainController {
         model.addAttribute("result", outputNumber);
         model.addAttribute("inputCurrency", actualInputCurrency);
         model.addAttribute("outputCurrency",actualOutputCurrency);
+
+        model.addAttribute("averageCourse", historyService.getAverageCourse(actualInputCurrency,actualOutputCurrency));
+        model.addAttribute("inputHistory", historyService.getCurrencyHistory(actualInputCurrency));
+        model.addAttribute("outputHistory", historyService.getCurrencyHistory(actualOutputCurrency));
 
         return "result";
     }
