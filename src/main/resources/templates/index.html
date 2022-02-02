@@ -3,23 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Конвертер валют</title>
+    <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
-    <form th:action="@{/}" method="post">
-        <label for="input_currency">Введите сумму</label>
-        <input type="number" name="input_currency" id="input_currency" min="0" step="0.01" required><br><br>
+    <form th:action="@{/}" method="post" class="container">
+        <div class="input-container">
+            <label for="input_currency">Введите сумму</label>
+            <input type="number" name="input_currency" id="input_currency" min="0" step="0.01" required>
+        </div>
 
-        <label for="select_input_currency">Введите входную валюту</label>
-        <select name="select_input_currency" id="select_input_currency" >
-            <option th:each="currency : ${currencies}" th:value="${currency.getId()}" th:text="${currency.getName()}"/>
-        </select><br><br>
+        <div class="input-container">
+            <label for="select_input_currency">Введите входную валюту</label>
+            <select name="select_input_currency" id="select_input_currency" >
+                <option th:each="currency : ${currencies}" th:value="${currency.getId()}" th:text="${currency.getName()}"/>
+            </select>
+        </div>
 
-        <label for="select_output_currency">Введите выходную валюту</label>
-        <select name="select_output_currency" id="select_output_currency">
-            <option th:each="currency : ${currencies}" th:value="${currency.getId()}" th:text="${currency.getName()}"/>
-        </select><br><br>
+        <div class="input-container">
+            <label for="select_output_currency">Введите выходную валюту</label>
+            <select name="select_output_currency" id="select_output_currency">
+                <option th:each="currency : ${currencies}" th:value="${currency.getId()}" th:text="${currency.getName()}"/>
+            </select>
+        </div>
 
-        <button type="submit" id="calculate-button">Конвертировать</button>
+        <button type="submit" class="button" id="calculate-button">Конвертировать</button>
     </form>
 </body>
 </html>

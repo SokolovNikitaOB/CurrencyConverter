@@ -1,0 +1,108 @@
+body{
+    margin: 0;
+    min-width: 700px;
+    background-color: #F2F2F2;
+    font-family: 'Fuzzy Bubbles', cursive;
+}
+
+h2{
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 30px;
+    border-bottom: 10px solid #F2F2F2;
+}
+
+h3{
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 20px;
+    border-bottom: 5px solid #F2F2F2;
+}
+
+h4{
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 18px;
+}
+
+li {
+    list-style-type: none;
+    margin-bottom: 2px;
+    padding: 4px;
+    border: 2px solid #F2F2F2;
+    border-radius: 4px;
+}
+ul {
+    margin: 0px;
+    padding-left: 30px;
+}
+
+label{
+    display: inline-block;
+    padding: 20px 20px;
+    font-size: 20px;
+    width: 300px;
+}
+
+input, select{
+    padding: 5px;
+    border: 2px solid #F2F2F2;
+    border-radius: 7px;
+    font-size: 20px;
+    font-family: 'Fuzzy Bubbles', cursive;
+}
+
+input{
+    width: 462px;
+}
+
+select{
+    width: 480px;
+}
+
+.container{
+    margin: 10px auto;
+    width: 900px;
+    background-color: #FFFFFF;
+}
+
+.result-container{
+    width: 700px;
+}
+
+.input-container{
+    border-bottom: 4px solid #F2F2F2;
+}
+
+.history-block{
+    margin-right: 30px;
+    padding-bottom: 10px;
+}
+
+.button{
+    padding: 10px;
+    border: 20px solid #FFFFFF;
+    background-color: #2c32ff;
+    color: #000000;
+    text-decoration: none;
+    text-align: center;
+    font-size: 20px;
+    font-family: 'Fuzzy Bubbles', cursive;
+}
+
+#calculate-button{
+    width: 240px;
+}
+
+#back-button{
+    display: block;
+    width: 120px;
+}
+
+#output_currency, #average_currency{
+    padding: 10px 30px;
+    font-size: 18px;
+    border-bottom: 10px solid #F2F2F2;
+}
+
+

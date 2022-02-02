@@ -3,29 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Результат конвертации</title>
+    <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
-    <h2>Результат конвертации</h2>
-        <div th:text="${input} + ' ' + ${inputCurrency.getCharCode()} + ' = ' + ${result} + ' ' + ${outputCurrency.getCharCode()}" id="output_currency"/>
+    <div class="container result-container">
+        <h2>Результат конвертации</h2>
+            <div th:text="${input} + ' ' + ${inputCurrency.getCharCode()} + ' = ' + ${result} + ' ' + ${outputCurrency.getCharCode()}" id="output_currency"/>
 
-    <h2>Статистика</h2>
-        <h3>В среднем</h3>
-            <div th:text="'1 ' + ${inputCurrency.getCharCode()} + ' = ' + ${averageCourse} + ' ' + ${outputCurrency.getCharCode()}"/>
-        <h3>История транзакций</h3>
-            <div>
-                <h4 th:text="${inputCurrency.getName()}"/>
-                <ul>
-                    <li th:each="oneConversion : ${inputHistory}" th:text="${oneConversion}"/>
-                </ul>
-            </div>
+        <h2>Статистика</h2>
+            <h3>В среднем</h3>
+                <div th:text="'1 ' + ${inputCurrency.getCharCode()} + ' = ' + ${averageCourse} + ' ' + ${outputCurrency.getCharCode()}" id="average_currency"/>
+            <h3>История транзакций</h3>
+                <div class="history-block">
+                    <h4 th:text="${inputCurrency.getName()}"/>
+                    <ul>
+                        <li th:each="oneConversion : ${inputHistory}" th:text="${oneConversion}"/>
+                    </ul>
+                </div>
 
-            <div>
-                <h4 th:text="${outputCurrency.getName()}"/>
-                <ul>
-                    <li th:each="oneConversion : ${outputHistory}" th:text="${oneConversion}"/>
-                </ul>
-            </div>
-
-    <a href="/">Вернуться</a>
+                <div class="history-block">
+                    <h4 th:text="${outputCurrency.getName()}"/>
+                    <ul>
+                        <li th:each="oneConversion : ${outputHistory}" th:text="${oneConversion}"/>
+                    </ul>
+                </div>
+    </div>
+    <div class="container result-container">
+        <a href="/" class="button" id="back-button">Вернуться</a>
+    </div>
 </body>
 </html>
