@@ -31,6 +31,11 @@ public class CurrencyService {
         this.pojoService = pojoService;
     }
 
+    /**
+     * This method get currency rate data from CBR.
+     * As result, we get java object, which further is mapped on POJO class.
+     * At the end, received POJO is saved in database.
+     */
     public void addToDatabaseActualData(){
         currencyRepository.saveAll(
                 currencyProxy
@@ -47,6 +52,12 @@ public class CurrencyService {
         return currencyRepository.findAll();
     }
 
+    /**
+     * This method check that information about currency is actual
+     * and if it isn't true we get new data from CBR.
+     * @param id currency id
+     * @return actual currency
+     */
     public Currency getActualCurrency(String id){
         Currency currency = currencyRepository.findById(id).orElseThrow();
         if(LocalDateTime.now().getDayOfMonth() != currency.getDate().getDayOfMonth()){
@@ -56,6 +67,11 @@ public class CurrencyService {
         return currency;
     }
 
+    /**
+     * This method calculate how much should get when converting
+     * and save in history database information about this conversion.
+     * @return id of conversion record in database
+     */
     public Long convertCurrency(Double inputNumber, Currency inputCurrency, Currency outputCurrency){
         Double outputNumber =  (inputCurrency.getValue() / inputCurrency.getNominal()) / (outputCurrency.getValue() / outputCurrency.getNominal()) * inputNumber;
         return historyRepository.save(pojoService.createConversionHistory(inputNumber,outputNumber,inputCurrency,outputCurrency)).getId();

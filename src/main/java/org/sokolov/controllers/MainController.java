@@ -15,17 +15,23 @@ import java.util.NoSuchElementException;
 
 @Controller
 public class MainController {
-    @Autowired
+    final
     CurrencyService currencyService;
 
-    @Autowired
+    final
     ConversionHistoryService historyService;
+
+    public MainController(CurrencyService currencyService, ConversionHistoryService historyService) {
+        this.currencyService = currencyService;
+        this.historyService = historyService;
+    }
 
     @GetMapping
     public String getMainPage(Model model){
         model.addAttribute("currencies", currencyService.getAllCurrencies());
         return "index";
     }
+
 
     @PostMapping
     public String convertCurrency(@RequestParam(name = "input_currency") Double inputNumber,
@@ -50,7 +56,7 @@ public class MainController {
             model.addAttribute("inputCurrency", inputCurrency);
             model.addAttribute("outputCurrency",outputCurrency);
 
-            model.addAttribute("averageCourse", historyService.getAverageCourse(inputCurrency,outputCurrency));
+            model.addAttribute("averageCourse", historyService.getAverageRate(inputCurrency,outputCurrency));
             model.addAttribute("inputHistory", historyService.getCurrencyHistory(inputCurrency));
             model.addAttribute("outputHistory", historyService.getCurrencyHistory(outputCurrency));
 

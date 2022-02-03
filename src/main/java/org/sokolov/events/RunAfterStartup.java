@@ -9,8 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class RunAfterStartup {
 
-    @Autowired
-    private CurrencyService currencyService;
+    private final CurrencyService currencyService;
+
+    public RunAfterStartup(CurrencyService currencyService) {
+        this.currencyService = currencyService;
+    }
 
     @EventListener(ApplicationReadyEvent.class)
     public void runAfterStartup(){
