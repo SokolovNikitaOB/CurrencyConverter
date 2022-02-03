@@ -1,8 +1,8 @@
 package org.sokolov.services;
 
+import org.sokolov.domains.ConversionHistory;
 import org.sokolov.domains.Currency;
 import org.sokolov.repositories.ConversionHistoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -11,8 +11,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class ConversionHistoryService {
-    @Autowired
-    private ConversionHistoryRepository historyRepository;
+    private final ConversionHistoryRepository historyRepository;
+
+    public ConversionHistoryService(ConversionHistoryRepository historyRepository) {
+        this.historyRepository = historyRepository;
+    }
 
     public double getAverageCourse(Currency inputCurrency, Currency outputCurrency){
         List<Double> coursesOfConversion = historyRepository
@@ -27,7 +30,7 @@ public class ConversionHistoryService {
                         .map(el -> el.getInputValue() / el.getOutputValue()).collect(Collectors.toList())
         );
 
-        return coursesOfConversion.stream().mapToDouble(el -> el).average().getAsDouble();
+        return coursesOfConversion.stream().mapToDouble(el -> el).average().orElseThrow();
     }
 
     public List<String> getCurrencyHistory(Currency currency){
@@ -37,5 +40,9 @@ public class ConversionHistoryService {
                         + el.getOutputValue() + " " + el.getOutputCurrency().getCharCode()
                         + " Date: " + el.getConversionDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")))
                 .collect(Collectors.toList());
+    }
+
+    public ConversionHistory getHistoryById(Long id){
+        return historyRepository.findById(id).orElseThrow();
     }
 }

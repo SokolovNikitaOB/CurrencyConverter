@@ -4,7 +4,6 @@ import org.sokolov.domains.Currency;
 import org.sokolov.microservices.CurrencyProxy;
 import org.sokolov.repositories.ConversionHistoryRepository;
 import org.sokolov.repositories.CurrencyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,23 +13,31 @@ import java.util.stream.Collectors;
 
 @Service
 public class CurrencyService {
-    @Autowired
-    private CurrencyProxy currencyProxy;
+    private final CurrencyProxy currencyProxy;
 
-    @Autowired
-    private CurrencyRepository currencyRepository;
+    private final CurrencyRepository currencyRepository;
 
-    @Autowired
-    private ConversionHistoryRepository historyRepository;
+    private final ConversionHistoryRepository historyRepository;
 
-    @Autowired
-    private CreationPOJOService pojoService;
+    private final CreationPOJOService pojoService;
+
+    public CurrencyService(CurrencyProxy currencyProxy,
+                           CurrencyRepository currencyRepository,
+                           ConversionHistoryRepository historyRepository,
+                           CreationPOJOService pojoService) {
+        this.currencyProxy = currencyProxy;
+        this.currencyRepository = currencyRepository;
+        this.historyRepository = historyRepository;
+        this.pojoService = pojoService;
+    }
 
     public void addToDatabaseActualData(){
         currencyRepository.saveAll(
-                currencyProxy.getValCurs().getValutes()
+                currencyProxy
+                        .getValCurs()
+                        .getValutes()
                         .stream()
-                        .map(valute -> pojoService.createCurrency(valute))
+                        .map(pojoService::createCurrency)
                         .sorted(Comparator.comparing(Currency::getName))
                         .collect(Collectors.toList())
         );
@@ -41,18 +48,16 @@ public class CurrencyService {
     }
 
     public Currency getActualCurrency(String id){
-        Currency currency = currencyRepository.findById(id).get();
+        Currency currency = currencyRepository.findById(id).orElseThrow();
         if(LocalDateTime.now().getDayOfMonth() != currency.getDate().getDayOfMonth()){
             addToDatabaseActualData();
-            return currencyRepository.findById(currency.getId()).get();
+            return currencyRepository.findById(currency.getId()).orElseThrow();
         }
         return currency;
     }
 
-    public Double convertCurrency(Double inputNumber, Currency inputCurrency, Currency outputCurrency){
+    public Long convertCurrency(Double inputNumber, Currency inputCurrency, Currency outputCurrency){
         Double outputNumber =  (inputCurrency.getValue() / inputCurrency.getNominal()) / (outputCurrency.getValue() / outputCurrency.getNominal()) * inputNumber;
-
-        historyRepository.save(pojoService.createConversionHistory(inputNumber,outputNumber,inputCurrency,outputCurrency));
-
-        return outputNumber;    }
+        return historyRepository.save(pojoService.createConversionHistory(inputNumber,outputNumber,inputCurrency,outputCurrency)).getId();
+    }
 }
